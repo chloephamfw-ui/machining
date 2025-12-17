@@ -18,8 +18,6 @@ changelog:
     - title: Other Changes
       labels:
         - "*"
-
-
 changelog:
   categories:
     - title: 🏕 Features
