@@ -1,0 +1,45 @@
+on:
+  push:
+    tags:
+      - "v0.1"
+jobs:
+  generate-release-notes:
+    runs-on: ubuntu-latest
+- uses: actions/checkout@v4
+- name: Get commits since last tag
+  uses: actions/github-script@v7
+  with:
+    script: |
+ - name: Generate release notes
+  uses: actions/github-script@v7
+  with:
+    script: |
+      const commits = [] // giả sử đã lấy commit list
+
+      const added = []
+      const modified = []
+      const removed = []
+
+      for (const commit of commits) {
+        const msg = commit.commit.message.toLowerCase()
+
+        if (msg.includes('add') || msg.includes('create')) {
+          added.push(`- ${commit.commit.message}`)
+        } else if (msg.includes('update') || msg.includes('modify')) {
+          modified.push(`- ${commit.commit.message}`)
+        } else if (msg.includes('remove') || msg.includes('drop')) {
+          removed.push(`- ${commit.commit.message}`)
+        }
+      }
+
+      const releaseBody = `
+      ## Added
+      ${added.join('\n')}
+
+      ## Modified
+      ${modified.join('\n')}
+
+      ## Removed
+      ${removed.join('\n')}
+      `
+
